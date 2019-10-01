@@ -24,4 +24,8 @@ public class BookRepository {
     public void deleteAll() {
         books.clear();
     }
+
+    public void deleteBookByTitle(String title) {
+        books.remove(title);
+    }
 }

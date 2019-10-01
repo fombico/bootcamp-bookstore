@@ -68,4 +68,15 @@ class ApiControllerTestJUnit5 {
             assertThat(returnedBooks).isEqualTo(bookList);
         }
     }
+
+    @Nested
+    @DisplayName("Calling delete by title")
+    class CallingDeleteByTitle {
+        @Test
+        @DisplayName("Should call book repository - delete book by title")
+        void shouldCallBookRepositoryDeleteBookByTitle() {
+            subject.deleteByTitle("Harry Potter");
+            verify(bookRepository).deleteBookByTitle("Harry Potter");
+        }
+    }
 }

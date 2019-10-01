@@ -2,6 +2,7 @@ package ca.lclbootcamp.app1.controllers;
 
 import ca.lclbootcamp.app1.models.Book;
 import ca.lclbootcamp.app1.repositories.BookRepository;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -88,6 +90,39 @@ class ApiControllerIntegrationTestJUnit5 {
             String actualResponse = mvcResult.getResponse().getContentAsString();
 
             assertThat(actualResponse).isEqualTo(expectedResponse);
+        }
+    }
+
+    @Nested
+    @DisplayName("Calling delete by Title")
+    class CallingDeleteByTitle {
+        final Book book1 = Book.builder()
+                .title("Harry Potter")
+                .releaseYear(2010)
+                .build();
+        final Book book2 = Book.builder()
+                .title("Lord of the Rings")
+                .releaseYear(2011)
+                .build();
+
+        @Test
+        @DisplayName("Should delete book by title")
+        void shouldDeleteBookByTitle() throws Exception {
+            bookRepository.save(book1);
+            bookRepository.save(book2);
+
+
+            mockMvc.perform(delete("/cart?title={title}", "Harry Potter"))
+                    .andExpect(status().isOk())
+                    .andReturn();
+
+            MvcResult mvcResult = mockMvc.perform(get("/cart"))
+                    .andExpect(status().isOk())
+                    .andReturn();
+
+            List<Book> books = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<Book>>(){});
+            assertThat(books.size()).isOne();
+            assertThat(books.get(0)).isEqualTo(book2);
         }
     }
 }

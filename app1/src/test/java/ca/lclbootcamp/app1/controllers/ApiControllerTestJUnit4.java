@@ -43,4 +43,10 @@ public class ApiControllerTestJUnit4 {
         assertThat(subject.getCart()).isEqualTo(bookList);
         verify(bookRepository).findAll();
     }
+
+    @Test
+    public void callingDeleteByTitle_shouldDeleteBookByTitle() {
+        subject.deleteByTitle("Harry Potter");
+        verify(bookRepository).deleteBookByTitle("Harry Potter");
+    }
 }
