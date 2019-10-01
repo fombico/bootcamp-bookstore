@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @AllArgsConstructor
 public class ApiController {
@@ -22,7 +20,7 @@ public class ApiController {
     }
 
     @GetMapping("/cart")
-    public List<Book> getCart() {
+    public Iterable<Book> getCart() {
         return bookRepository.findAll();
     }
 

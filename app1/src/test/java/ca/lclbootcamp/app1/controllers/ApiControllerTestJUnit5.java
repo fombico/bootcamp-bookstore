@@ -47,7 +47,7 @@ class ApiControllerTestJUnit5 {
     @DisplayName("Calling get cart")
     class CallingGetCart {
         private final List<Book> bookList = Collections.singletonList(book);
-        private List<Book> returnedBooks;
+        private Iterable<Book> returnedBooks;
 
         @BeforeEach
         void setup() {
