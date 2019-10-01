@@ -105,4 +105,31 @@ public class ApiControllerIntegrationTestJUnit4 {
         assertThat(books.size()).isOne();
         assertThat(books.get(0)).isEqualTo(book2);
     }
+
+    @Test
+    public void callingGetCartByFilter_shouldReturnBooksReleasedWithinTheStartAndEndYearOrderedByReleaseYear() throws Exception {
+        final Book book1 = Book.builder()
+                .title("Harry Potter")
+                .releaseYear(2010)
+                .build();
+        final Book book2 = Book.builder()
+                .title("Lord of the Rings")
+                .releaseYear(2011)
+                .build();
+        final Book book3 = Book.builder()
+                .title("Star Wars")
+                .releaseYear(1977)
+                .build();
+
+        bookRepository.saveAll(Arrays.asList(book1, book2, book3));
+
+        MvcResult mvcResult = mockMvc.perform(get("/cart/filter?startYear={startYear}&endYear={endYear}", "1975", "2010"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        List<Book> books = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<Book>>(){});
+        assertThat(books.size()).isEqualTo(2);
+        assertThat(books.get(0).getTitle()).isEqualTo("Star Wars");
+        assertThat(books.get(1).getTitle()).isEqualTo("Harry Potter");
+    }
 }

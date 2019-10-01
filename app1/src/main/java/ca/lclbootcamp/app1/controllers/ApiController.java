@@ -28,4 +28,9 @@ public class ApiController {
     public void deleteByTitle(@RequestParam String title) {
         bookRepository.deleteBookByTitle(title);
     }
+
+    @GetMapping("/cart/filter")
+    public Iterable<Book> getCartByFilter(@RequestParam long startYear, @RequestParam long endYear) {
+        return bookRepository.findAllByReleaseYearIsBetweenOrderByReleaseYearAsc(startYear, endYear);
+    }
 }

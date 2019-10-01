@@ -24,10 +24,10 @@ class BookRepositoryTestJUnit5 {
     BookRepository subject;
 
     @Nested
-    @DisplayName("Find All By Title Contains")
+    @DisplayName("Find all by title contains")
     @DataJpaTest
     class FindAllByTitleContains {
-        
+
         @Test
         @DisplayName("Returns books that contain title")
         @Sql("/insertBook.sql")
@@ -37,6 +37,23 @@ class BookRepositoryTestJUnit5 {
             assertThat(titles).hasSize(2);
             assertThat(titles).contains("Harry Potter - A New Hope");
             assertThat(titles).contains("Harry Potter - Voldemort Strikes Back");
+        }
+    }
+
+    @Nested
+    @DisplayName("Find all by releaseYear is between, order by releaseYear asc")
+    @DataJpaTest
+    class FindAllByReleaseYearIsBetweenOrderByReleaseYearAsc {
+
+        @Test
+        @DisplayName("returns books within years, ordered by releaseYear asc")
+        @Sql("/insertBook.sql")
+        void returnsBooksWithinYearsOrderedByReleaseYearAsc() {
+            List<Book> books = subject.findAllByReleaseYearIsBetweenOrderByReleaseYearAsc(1980L, 2010L);
+            assertThat(books).hasSize(3);
+            assertThat(books.get(0).getTitle()).isEqualTo("Star Wars - Prisoner of the Death Star");
+            assertThat(books.get(1).getTitle()).isEqualTo("Star Wars - Goblet of Juice");
+            assertThat(books.get(2).getTitle()).isEqualTo("Harry Potter - Voldemort Strikes Back");
         }
     }
 }

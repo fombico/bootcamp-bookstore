@@ -79,4 +79,15 @@ class ApiControllerTestJUnit5 {
             verify(bookRepository).deleteBookByTitle("Harry Potter");
         }
     }
+
+    @Nested
+    @DisplayName("Calling get cart by filter")
+    class CallingGetCartByFilter {
+        @Test
+        @DisplayName("Should call book repository - find all by releaseYear is between orderBy releaseYear asc")
+        void shouldCallBookRepositoryFindAllByReleaseYearIsBetweenOrderByReleaseYearAsc() {
+            subject.getCartByFilter(2010L, 2020L);
+            verify(bookRepository).findAllByReleaseYearIsBetweenOrderByReleaseYearAsc(2010L, 2020L);
+        }
+    }
 }

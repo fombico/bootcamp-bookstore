@@ -14,4 +14,6 @@ public interface BookRepository extends CrudRepository<Book, Long> {
     void deleteBookByTitle(String title);
 
     List<Book> findAllByTitleContains(String title);
+
+    List<Book> findAllByReleaseYearIsBetweenOrderByReleaseYearAsc(long startYear, long endYear);
 }

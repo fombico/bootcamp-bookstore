@@ -49,4 +49,10 @@ public class ApiControllerTestJUnit4 {
         subject.deleteByTitle("Harry Potter");
         verify(bookRepository).deleteBookByTitle("Harry Potter");
     }
+
+    @Test
+    public void callingGetCartByFilter_shouldCallBookRepositoryFindAllByReleaseYearIsBetweenOrderByReleaseYearAsc() throws Exception{
+        subject.getCartByFilter(2010L, 2020L);
+        verify(bookRepository).findAllByReleaseYearIsBetweenOrderByReleaseYearAsc(2010L, 2020L);
+    }
 }
